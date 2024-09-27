@@ -14,4 +14,4 @@ pandas>=2.2.1
 pillow
 ipywidgets
 Jinja2
-genz-llm
+# genz-llm

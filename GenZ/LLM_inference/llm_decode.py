@@ -111,7 +111,7 @@ def decode_moddeling(model = 'BERT', batch_size = 1, input_tokens = 4096,
     ################################################################################################## # 
     ### First token generation time
     ################################################################################################## # 
-    model_decode = create_inference_moe_decode_model(input_sequence_length=input_tokens,output_gen_tokens = 0 , 
+    model_decode = create_inference_moe_decode_model(input_sequence_length=input_tokens,output_gen_tokens = 1 , 
                                         name=model, Hkv=Hkv, tensor_parallel=tensor_parallel, beam_merge= (Bb > 1), beam_size = Bb)
     model_df = get_model_df(model_decode, system, unit, batch_size*Bb, intermediate_on_chip=FLAT, beam_merge= (Bb > 1), beam_size= Bb )
     summary_table = get_summary_table(model_df,system,unit)
@@ -119,6 +119,7 @@ def decode_moddeling(model = 'BERT', batch_size = 1, input_tokens = 4096,
     if debug:
         display_df(model_df)
         display(summary_table)
+        dot_log_roofline(model_df, system, unit)
     decode_latency_first_token = summary_table['Latency (msec)'].values[0]   # Latency in msec
 
 
@@ -135,6 +136,7 @@ def decode_moddeling(model = 'BERT', batch_size = 1, input_tokens = 4096,
     if debug:
         display_df(model_df)
         display(summary_table)
+        dot_log_roofline(model_df, system, unit)
     decode_latency_last_token = summary_table['Latency (msec)'].values[0]      # Latency in msec 
 
     ################################################################################################## # 

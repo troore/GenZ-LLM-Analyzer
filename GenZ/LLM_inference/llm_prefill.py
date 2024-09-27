@@ -42,7 +42,7 @@ def prefill_moddeling(model = 'BERT', batch_size = 1, input_tokens = 4096,
     ### Model Characterization Calculation
     ################################################################################################## # 
     model_prefill = create_inference_moe_prefix_model(input_sequence_length=input_tokens,output_gen_tokens = 0 , 
-                                        name=model, Hkv=Hkv, tensor_parallel=tensor_parallel)
+                                                      name=model, Hkv=Hkv, tensor_parallel=tensor_parallel)
 
 
     model_df = get_model_df(model_prefill, system, unit, batch_size, intermediate_on_chip=FLAT , model_characterstics = True)

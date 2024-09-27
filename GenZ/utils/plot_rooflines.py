@@ -2,16 +2,20 @@ import seaborn as sns
 import matplotlib.pyplot as plt
 import pandas as pd
 import numpy as np
+from math import log
 from GenZ.unit import Unit
 
 unit = Unit()
 
-def plot_roofline_background(system, max_x,unit):
+def plot_roofline_background(system, max_x, unit):
     op_intensity = system.flops/system.offchip_mem_bw
     flops = unit.raw_to_unit(system.flops, type='C')
     max_x = max(max_x, op_intensity*2.5)
     turning_points = [[0, 0], [op_intensity, flops], [max_x, flops]]
     turning_points = np.array(turning_points)
+    print(turning_points)
+    print(turning_points[:,0])
+    print(turning_points[:,1])
     plt.plot(turning_points[:,0], turning_points[:,1], c='grey')
 
     op_intensity = system.flops/system.onchip_mem_bw
@@ -23,14 +27,47 @@ def plot_roofline_background(system, max_x,unit):
     plt.xlabel('Op Intensity (FLOPs/Byte)')
     plt.ylabel(f'{unit.unit_compute.upper()}')
 
+def plot_log_roofline_background(system, max_x, unit):
+    op_intensity = system.flops/system.offchip_mem_bw
+    flops = unit.raw_to_unit(system.flops, type='C')
+    max_x = max(max_x, op_intensity*2.5)
+    # turning_points = [[0, 0], [op_intensity, flops], [max_x, flops]]
+    turning_points = [[0, log(system.offchip_mem_bw, 10)], 
+                      [log(op_intensity, 10), log(flops ,10)], 
+                      [log(max_x, 10), log(flops, 10)]]
+    turning_points = np.array(turning_points)
+    print(turning_points)
+    print(turning_points[:,0])
+    print(turning_points[:,1])
+    plt.plot(turning_points[:,0], turning_points[:,1], c='grey')
 
-def dot_roofline(df,system,unit):
+    plt.xlabel('Op Intensity (FLOPs/Byte)')
+    plt.ylabel(f'{unit.unit_compute.upper()}')
+
+
+def dot_roofline(df, system, unit):
     max_x = max(df['Op Intensity'])
-    plot_roofline_background(system, max_x,unit)
+    plot_roofline_background(system, max_x, unit)
+    print("Number of points: {}".format(len(df)))
     for i in range(len(df)):
         op_intensity = df.loc[i, 'Op Intensity']
         thrpt = df.loc[i, 'Throughput (Tflops)']
         plt.scatter(op_intensity, thrpt)
+
+    plt.savefig('roofline.png')
+
+def dot_log_roofline(df, system, unit):
+    max_x = max(df['Op Intensity'])
+    plot_log_roofline_background(system, max_x, unit)
+    print("Number of points: {}".format(len(df)))
+    for i in range(len(df)):
+        op_intensity = df.loc[i, 'Op Intensity']
+        thrpt = df.loc[i, 'Throughput (Tflops)']
+        print(op_intensity)
+        print(thrpt)
+        plt.scatter(log(op_intensity, 10), log(thrpt, 10))
+
+    plt.savefig('roofline.png')
 
 def color_bound_type(value):
     if value == 'M':
