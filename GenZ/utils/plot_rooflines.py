@@ -31,8 +31,11 @@ def plot_log_roofline_background(system, max_x, unit):
     op_intensity = system.flops/system.offchip_mem_bw
     flops = unit.raw_to_unit(system.flops, type='C')
     max_x = max(max_x, op_intensity*2.5)
+    offchip_mem_bw = unit.raw_to_unit(system.offchip_mem_bw, type='BW') / 1024.0  # change to 'T' to be consistent with flops
+    print("TFLOPS: {}".format(flops))
+    print("MEM BW: {}".format(offchip_mem_bw))
     # turning_points = [[0, 0], [op_intensity, flops], [max_x, flops]]
-    turning_points = [[0, log(system.offchip_mem_bw, 10)], 
+    turning_points = [[0, log(offchip_mem_bw, 10)], 
                       [log(op_intensity, 10), log(flops ,10)], 
                       [log(max_x, 10), log(flops, 10)]]
     turning_points = np.array(turning_points)
