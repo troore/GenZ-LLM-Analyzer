@@ -9,6 +9,7 @@ from GenZ.analye_model import *
 import warnings
 from GenZ.collective_times import *
 from GenZ.utils.plot_rooflines import *
+from GenZ.utils.display_df import *
 
 unit = Unit()
 
@@ -202,7 +203,7 @@ def decode_moddeling(model = 'BERT',
     if debug:
         display_df(model_df)
         display(summary_table)
-        dot_log_roofline(model_df, system, unit)
+        # dot_log_roofline(model_df, system, unit)
     decode_latency_first_token = summary_table['Latency (msec)'].values[0]   # Latency in msec
 
 
@@ -219,7 +220,7 @@ def decode_moddeling(model = 'BERT',
     if debug:
         display_df(model_df)
         display(summary_table)
-        dot_log_roofline(model_df, system, unit)
+        # dot_log_roofline(model_df, system, unit)
     decode_latency_last_token = summary_table['Latency (msec)'].values[0]      # Latency in msec 
 
     ################################################################################################## # 
