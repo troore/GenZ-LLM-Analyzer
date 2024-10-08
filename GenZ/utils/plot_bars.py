@@ -31,6 +31,12 @@ def plot_grouped_bars(title: str,
         label = labels[i]
         plt.bar(x + offset, value_group, width=bar_width, label=label)
 
+    # Add values on top of the bars
+    for i in range(len(categories)):
+        for j, value_group in enumerate(value_groups):
+            offset = bar_width*j-(bar_width/2)*(len(value_groups)-1)-0.05
+            plt.text(x[i]+offset, value_group[i]+0.5, "{:.3f}".format(value_group[i]))
+
     # Customize the plot
     plt.xlabel(xlabel)
     plt.ylabel(ylabel)
@@ -43,12 +49,12 @@ def plot_grouped_bars(title: str,
     plt.savefig('{}.png'.format(figure_name))
 
 
-plot_grouped_bars("Grouped Bar Plot",
-                  "Categories",
-                  "Values", 
-                  categories,
-                  ['A', 'B', 'C', 'D'],
-                  [group1_values, 
-                   group2_values, 
-                   group3_values, 
-                   group4_values])
+plot_grouped_bars(title="Grouped Bar Plot",
+                  xlabel="Categories",
+                  ylabel="Values",
+                  categories=categories,
+                  labels=['A', 'B', 'C', 'D'],
+                  value_groups=[group1_values,
+                                group2_values,
+                                group3_values,
+                                group4_values])

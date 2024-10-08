@@ -45,8 +45,7 @@ def tpot(offload=False):
                                       debug=False,
                                       time_breakdown=True)
         
-            print(result['Latency'])
-            print(result['Throughput'])
+            # print(result)
             tpot_latency[col][row] = result['Latency']
             tpot_thrpt[col][row] = result['Throughput']
         except ValueError as ve:

@@ -104,9 +104,6 @@ class Operator(object):
             memory_time += tensor_sz * system.get_bit_multiplier(type='M', data='w' if self.get_op_type(self.dim) == 'GEMM' else 'a')/bw
         return memory_time
 
-
-
-
     def get_onchip_occupancy(self):
         sz_list = self.get_sz_list()
         loc_list = self.get_loc_list()

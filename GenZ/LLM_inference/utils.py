@@ -20,6 +20,7 @@ def get_offload_system(system, total_memory_req, debug):
     total_device_memory = unit.raw_to_unit(system.off_chip_mem_size, type='M')/1024 ## GB
 
     memory_offloaded = total_memory_req - total_device_memory
+    print("req: {}, device: {}, offloaded: {}".format(total_memory_req, total_device_memory, memory_offloaded))
 
     if debug:
         print(f'Total Memory Req:{total_memory_req}, Total device mem:{total_device_memory}, Mem Offload:{memory_offloaded}')
