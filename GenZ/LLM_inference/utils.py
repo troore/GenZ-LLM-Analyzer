@@ -13,6 +13,15 @@ unit = Unit()
 class ModdelingOutput(dict):
     Latency: float = None
     Throughput: float = None
+    AI_qkv: float = None
+    AI_logit: float = None
+    AI_attend: float
+    AI_output: float = None
+    AI_up: float = None
+    AI_gate: float = None
+    AI_down: float = None
+    AI_total: float = None
+    Batch: int = None
     Runtime_breakdown: Optional[list[float]] = None 
     is_offload: Optional[bool] = False
 

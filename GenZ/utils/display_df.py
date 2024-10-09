@@ -1,6 +1,10 @@
 import pandas as pd
 import numpy as np
 
+from GenZ.unit import Unit
+
+unit = Unit()
+
 def color_bound_type(value):
     if value == 'M':
         color = 'red'

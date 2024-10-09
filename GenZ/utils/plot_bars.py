@@ -49,12 +49,12 @@ def plot_grouped_bars(title: str,
     plt.savefig('{}.png'.format(figure_name))
 
 
-plot_grouped_bars(title="Grouped Bar Plot",
-                  xlabel="Categories",
-                  ylabel="Values",
-                  categories=categories,
-                  labels=['A', 'B', 'C', 'D'],
-                  value_groups=[group1_values,
-                                group2_values,
-                                group3_values,
-                                group4_values])
+# plot_grouped_bars(title="Grouped Bar Plot",
+#                   xlabel="Categories",
+#                   ylabel="Values",
+#                   categories=categories,
+#                   labels=['A', 'B', 'C', 'D'],
+#                   value_groups=[group1_values,
+#                                 group2_values,
+#                                 group3_values,
+#                                 group4_values])

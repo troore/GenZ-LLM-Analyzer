@@ -200,8 +200,11 @@ def decode_moddeling(model = 'BERT',
     model_df = get_model_df(model_decode, system, unit, batch_size*Bb, intermediate_on_chip=FLAT, beam_merge= (Bb > 1), beam_size= Bb )
     summary_table = get_summary_table(model_df,system,unit)
 
+    num_first_token_ops = model_df["Num ops ({})".format(unit.unit_flop)].sum()
+    num_first_token_data = model_df["Total Data (MB)".format(unit.unit_flop)].sum()
+
     if debug:
-        display_df(model_df)
+        # display_df(model_df)
         display(summary_table)
         # dot_log_roofline(model_df, system, unit)
     decode_latency_first_token = summary_table['Latency (msec)'].values[0]   # Latency in msec
@@ -215,6 +218,15 @@ def decode_moddeling(model = 'BERT',
 
     model_df = get_model_df(model_decode, system, unit, batch_size*Bb,  intermediate_on_chip=FLAT , beam_merge= (Bb > 1), beam_size= Bb)
     summary_table = get_summary_table(model_df,system,unit)
+
+    # print(model_df)
+    # print(model_df.loc[0].at["Num ops ({})".format(unit.unit_flop)])
+    num_last_token_ops = model_df["Num ops ({})".format(unit.unit_flop)].sum()
+    num_last_token_data = model_df["Total Data (MB)".format(unit.unit_flop)].sum()
+
+    total_op_intensity = (num_first_token_ops + num_last_token_ops) / (num_first_token_data + num_last_token_data)
+    # print(total_op_intensity)
+
     if return_model_df:
         return model_df, summary_table
     if debug:
@@ -291,6 +303,8 @@ def decode_moddeling(model = 'BERT',
     return ModdelingOutput(
                         Latency=decode_latency,
                         Throughput=thrpt,
+                        AI_total=total_op_intensity,
+                        Batch=batch_size,
                         Runtime_breakdown=runtime_breakdown,
                         is_offload=is_offloaded,
                 )
